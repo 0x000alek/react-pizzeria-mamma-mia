@@ -1,0 +1,24 @@
+header {
+  background: linear-gradient(rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.75)), url(./assets/img/Header.jpg);
+  background-size: cover;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+}
+
+header .headline {
+  text-align: center;
+  margin: 1rem 8.5rem;
+}
+
+.card-ingredients {
+  text-align: center;
+}
+
+.card-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
