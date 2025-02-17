@@ -41,7 +41,8 @@ const Navbar = () => {
         <ul className="navbar-nav">
           <li className="nav-item px-2">
             <a className="btn btn-outline-info" href="#">
-              <FontAwesomeIcon icon={faCartShopping} /> Total: ${total.toLocaleString('es-CL')}</a>
+              <FontAwesomeIcon icon={faCartShopping} /> Total: ${total.toLocaleString('es-CL')}
+            </a>
           </li>
         </ul>
       </div>

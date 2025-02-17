@@ -1,9 +1,11 @@
 import './App.css'
-import Navbar from './components/Navbar'
-import LoginPage from './components/LoginPage'
-import RegisterPage from './components/RegisterPage'
-import Home from './components/Home'
+
+import Cart from './components/Cart'
 import Footer from './components/Footer'
+import Navbar from './components/Navbar'
+// import Home from './components/Home'
+// import LoginPage from './components/LoginPage'
+// import RegisterPage from './components/RegisterPage'
 
 const App = () => {
   return (
@@ -11,7 +13,8 @@ const App = () => {
       <Navbar />
       {/* <Home /> */}
       {/* <RegisterPage /> */}
-      <LoginPage />
+      {/* <LoginPage /> */}
+      <Cart />
       <Footer />
     </>
   )

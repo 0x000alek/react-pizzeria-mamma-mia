@@ -8,16 +8,20 @@ const CardPizza = ({name, price, ingredients, img}) => {
       <div className="card">
         <img src={img} className="card-img-top" alt="Pizza"/>
         <div className="card-body pb-1">
-          <h4 className="card-title">Pizza {name}</h4>
+          <h4 className="card-title">Pizza {capitalizeWords(name)}</h4>
         </div>
         <hr className="m-0" />
         <div className="card-body fw-lighter text-center p-1">
           <p className="fs-4 text mb-0">Ingredientes:</p>
-          <p className="card-text">🍕 {ingredients.join(', ')}</p>
+          <ul className='list-unstyled'>
+            { ingredients.map((ingredient) => (
+              <li key={ingredient}>{capitalizeWords(ingredient)}</li>
+            ))}
+          </ul>
         </div>
         <hr className="m-0" />
         <div className="card-body">
-          <p className="fs-3 text fw-bold text-center">Precio: ${price.toLocaleString('es-CL')}</p>
+          <p className="fs-3 text fw-bold text-center">Precio: ${formatPrice(price)}</p>
           <div className="card-actions">
             <button className="btn btn-outline-dark mx-1">Ver más <FontAwesomeIcon icon={faPlus}/></button>
             <button className="btn btn-dark mx-1">Añadir <FontAwesomeIcon icon={faCartShopping} /></button>
@@ -26,6 +30,16 @@ const CardPizza = ({name, price, ingredients, img}) => {
       </div>
     </div>
   )
+}
+
+function capitalizeWords(string) {
+  return string.split(' ').map(word =>
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join(' ')
+}
+
+function formatPrice(amount) {
+  return amount.toLocaleString('es-CL')
 }
 
 export default CardPizza
