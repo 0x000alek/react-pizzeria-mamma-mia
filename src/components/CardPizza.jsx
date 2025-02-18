@@ -1,8 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faCartShopping, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 const CardPizza = ({name, price, ingredients, img}) => {
+  const capitalizeWords = (string) => {
+    return string.split(' ').map(word =>
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ')
+  }
+
+  const formatPrice = (amount) => {
+    return new Intl.NumberFormat('es-CL', {currency: 'CLP', style: 'currency'}).format(amount)
+  }
+
   return (
     <div className="d-flex col-lg-4 col-md-6 col-sm-10 mb-2">
       <div className="card">
@@ -23,23 +32,17 @@ const CardPizza = ({name, price, ingredients, img}) => {
         <div className="card-body">
           <p className="fs-3 text fw-bold text-center">Precio: ${formatPrice(price)}</p>
           <div className="card-actions">
-            <button className="btn btn-outline-dark mx-1">Ver más <FontAwesomeIcon icon={faPlus}/></button>
-            <button className="btn btn-dark mx-1">Añadir <FontAwesomeIcon icon={faCartShopping} /></button>
+            <button className="btn btn-outline-dark mx-1">
+              Ver más <FontAwesomeIcon icon={faPlus}/>
+            </button>
+            <button className="btn btn-dark mx-1">
+              Añadir <FontAwesomeIcon icon={faCartShopping} />
+            </button>
           </div>
         </div>
       </div>
     </div>
   )
-}
-
-function capitalizeWords(string) {
-  return string.split(' ').map(word =>
-    word.charAt(0).toUpperCase() + word.slice(1)
-  ).join(' ')
-}
-
-function formatPrice(amount) {
-  return amount.toLocaleString('es-CL')
 }
 
 export default CardPizza
