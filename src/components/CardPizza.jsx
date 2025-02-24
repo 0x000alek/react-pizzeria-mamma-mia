@@ -30,7 +30,7 @@ const CardPizza = ({name, price, ingredients, img}) => {
         </div>
         <hr className="m-0" />
         <div className="card-body">
-          <p className="fs-3 text fw-bold text-center">Precio: ${formatPrice(price)}</p>
+          <p className="fs-3 text fw-bold text-center">Precio: {formatPrice(price)}</p>
           <div className="card-actions">
             <button className="btn btn-outline-dark mx-1">
               Ver más <FontAwesomeIcon icon={faPlus}/>
