@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMinus, faPlus, faTrash, faArrowLeft, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 
@@ -80,9 +82,9 @@ const Cart = () => {
               </div>
             </div>
             <div className='text-start mb-4'>
-              <a href='#' className='btn btn-outline-primary'>
+              <Link to="/" className='btn btn-outline-primary'>
                 <FontAwesomeIcon icon={faArrowLeft} /> Seguir Comprando
-              </a>
+              </Link>
             </div>
           </div>
 

@@ -3,7 +3,7 @@ import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
 
 import { useEffect, useState } from 'react'
 
-import Loading from './Loading'
+import Loading from '../components/Loading'
 
 const Pizza = () => {
   const [pizza, setPizza] = useState({})

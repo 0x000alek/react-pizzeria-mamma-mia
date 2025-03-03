@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
   const total = 25000;
-  const token = useState(false);
+  const token = false
 
   return (
     <nav className="navbar navbar-expand-lg bg-black navbar-dark">
@@ -15,34 +15,34 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav me-auto">
           <li className="nav-item px-2 mb-xl-0 mb-2">
-            <a className="btn btn-outline-light" href="#">🍕 Home</a>
+            <Link to="/" className="btn btn-outline-light">🍕 Home</Link>
           </li>
-          {!token &&
+          {token &&
           <li className="nav-item px-2 mb-xl-0 mb-2">
-            <a className="btn btn-outline-light" href="#">🔓 Profile</a>
+            <Link to="/profile" className="btn btn-outline-light">🔓 Profile</Link>
           </li>
           }
-          {!token &&
+          {token &&
           <li className="nav-item px-2 mb-xl-0 mb-2">
             <a className="btn btn-outline-light" href="#">🔒 Logout</a>
           </li>
           }
-          {token &&
+          {!token &&
           <li className="nav-item px-2 mb-xl-0 mb-2">
-            <a className="btn btn-outline-light" href="#">🔐 Login</a>
+            <Link to="/login" className="btn btn-outline-light">🔐 Login</Link>
           </li>
           }
-          {token &&
+          {!token &&
           <li className="nav-item px-2 mb-xl-0 mb-2">
-            <a className="btn btn-outline-light" href="#">🔐 Register</a>
+            <Link to="/register" className="btn btn-outline-light">🔐 Register</Link>
           </li>
           }
         </ul>
         <ul className="navbar-nav">
           <li className="nav-item px-2">
-            <a className="btn btn-outline-info" href="#">
+            <Link to="/cart" className="btn btn-outline-info">
               <FontAwesomeIcon icon={faCartShopping} /> Total: ${total.toLocaleString('es-CL')}
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
