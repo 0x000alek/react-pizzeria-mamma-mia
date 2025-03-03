@@ -9,10 +9,6 @@ const Pizza = () => {
   const [pizza, setPizza] = useState({})
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    getPizza()
-  }, [])
-
   const getPizza = async () => {
     const url = 'http://localhost:5000/api/pizzas/p001'
     try {
@@ -26,6 +22,10 @@ const Pizza = () => {
       return
     }
   }
+
+  useEffect(() => {
+    getPizza()
+  }, [])
 
   const capitalizeWords = (string) => {
     return string.split(' ').map(word =>

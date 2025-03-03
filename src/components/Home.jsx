@@ -5,10 +5,6 @@ import CardPizza from './CardPizza'
 
 const Home = () => {
   const [pizzas, setPizzas] = useState([])
-
-  useEffect(() => {
-    getPizzas()
-  }, [])
   
   const getPizzas = async () => {
     const url = 'http://localhost:5000/api/pizzas'
@@ -16,12 +12,16 @@ const Home = () => {
       const res = await fetch(url)
       const data = await res.json()
 
-      setPizzas(...pizzas, data)
+      setPizzas(data)
     } catch (err) {
       console.error(err)
       return
     }
   }
+
+  useEffect(() => {
+    getPizzas()
+  }, [])
 
   return (
     <>
