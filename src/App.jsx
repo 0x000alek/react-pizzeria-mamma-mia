@@ -11,22 +11,25 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
+import CartProvider from './context/CartContext'
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/register' element={<RegisterPage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/pizza/p001' element={<Pizza />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/404' element={<NotFound />} />
-          <Route path='*' element={<NotFound />} />
-        </Routes>
+        <CartProvider>
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/pizza/p001' element={<Pizza />} />
+            <Route path='/profile' element={<Profile />} />
+            <Route path='/404' element={<NotFound />} />
+            <Route path='*' element={<NotFound />} />
+          </Routes>
+        </CartProvider>
         <Footer />
       </BrowserRouter>
     </>

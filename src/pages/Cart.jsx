@@ -1,29 +1,13 @@
-import { Link } from 'react-router-dom'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMinus, faPlus, faTrash, faArrowLeft, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 
-import { pizzaCart } from '../assets/js/data/pizzas'
-import { useState } from 'react'
+import { useContext } from 'react'
+import { Link } from 'react-router-dom'
+
+import { CartContext } from '../context/CartContext'
 
 const Cart = () => {
-  const [cart, setCart] = useState(pizzaCart)
-
-  const handleReduceButtonOnClick = (pizzaId) => {
-    setCart(cart.map((pizza) => 
-      pizza.id === pizzaId ? {...pizza, count: pizza.count - 1} : pizza
-    ).filter((pizza) => pizza.count > 0))
-  }
-
-  const handleIncrementButtonOnClick = (pizzaId) => {
-    setCart(cart.map((pizza) => 
-      pizza.id === pizzaId ? {...pizza, count: pizza.count + 1} : pizza
-    ))
-  }
-
-  const handleRemoveButtonOnClick = (pizzaId) => {
-    setCart(cart.filter((pizza) => pizza.id !== pizzaId))
-  }
+  const { cart, addToCart, subtractFromCart, removeFromCart, subtotal, shippingCost, total } = useContext(CartContext)
 
   const capitalizeWords = (string) => {
     return string.split(' ').map(word =>
@@ -35,14 +19,6 @@ const Cart = () => {
     return new Intl.NumberFormat('es-CL', {currency: 'CLP', style: 'currency'}).format(amount)
   }
 
-  const calculateSubtotal = () => {
-    return cart.reduce((accumulator, pizza) => accumulator + (pizza.price * pizza.count), 0)
-  }
-
-  const subtotal = calculateSubtotal()
-  const shippingCost = 0
-  const total = subtotal + shippingCost
-
   return (
     <>
     <div className='container-fluid'>
@@ -51,6 +27,7 @@ const Cart = () => {
           <div className='col-lg-8'>
             <div className='card mb-4'>
               <div className='card-body'>
+                {total === 0 && <p className='mb-0 text-center text-body-secondary'><span>Tu carrito está vacío</span></p>}
                 {cart.map((pizza) => (
                   <div className='row cart-item mb-3' key={pizza.id}>
                     <div className='col-md-3'>
@@ -62,18 +39,18 @@ const Cart = () => {
                     </div>
                     <div className='col-md-2'>
                       <div className="input-group">
-                        <button className="btn btn-outline-secondary btn-sm" type="button" onClick={() => handleReduceButtonOnClick(pizza.id)}>
+                        <button className="btn btn-outline-secondary btn-sm" type="button" onClick={() => subtractFromCart(pizza.id)}>
                           <FontAwesomeIcon icon={faMinus} />
                         </button>
                         <input type="text" className="form-control form-control-sm text-center quantity-input" value={pizza.count} readOnly/>
-                        <button className="btn btn-outline-secondary btn-sm" type="button" onClick={() => handleIncrementButtonOnClick(pizza.id)}>
+                        <button className="btn btn-outline-secondary btn-sm" type="button" onClick={() => addToCart(pizza)}>
                           <FontAwesomeIcon icon={faPlus} />
                         </button>
                       </div>
                     </div>
                     <div className='col-md-2 text-end'>
                       <p className='fw-bold'>{formatPrice(pizza.price * pizza.count)}</p>
-                      <button className='btn btn-sm btn-outline-danger' onClick={() => handleRemoveButtonOnClick(pizza.id)}>
+                      <button className='btn btn-sm btn-outline-danger' onClick={() => removeFromCart(pizza.id)}>
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
                     </div>
@@ -105,7 +82,7 @@ const Cart = () => {
                   <strong>Total</strong>
                   <strong>{formatPrice(total)}</strong>
                 </div>
-                <button className="btn btn-primary w-100">
+                <button className="btn btn-primary w-100" disabled={ total === 0}>
                   <FontAwesomeIcon icon={faCartShopping} /> Ir a Pagar
                 </button>
               </div>

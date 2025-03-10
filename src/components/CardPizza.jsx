@@ -1,7 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping, faPlus } from '@fortawesome/free-solid-svg-icons'
 
-const CardPizza = ({name, price, ingredients, img}) => {
+import { useContext } from 'react'
+
+import { CartContext } from '../context/CartContext'
+
+const CardPizza = ({ id, name, price, ingredients, img }) => {
+  const { addToCart } = useContext(CartContext)
+  const pizzaCartItem = {
+    id, name, price, count: 1, img
+  }
+
   const capitalizeWords = (string) => {
     return string.split(' ').map(word =>
       word.charAt(0).toUpperCase() + word.slice(1)
@@ -35,7 +44,7 @@ const CardPizza = ({name, price, ingredients, img}) => {
             <button className="btn btn-outline-dark mx-1">
               Ver más <FontAwesomeIcon icon={faPlus}/>
             </button>
-            <button className="btn btn-dark mx-1">
+            <button className="btn btn-dark mx-1" onClick={() => addToCart(pizzaCartItem)}>
               Añadir <FontAwesomeIcon icon={faCartShopping} />
             </button>
           </div>
