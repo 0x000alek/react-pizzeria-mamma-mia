@@ -9,12 +9,6 @@ import { CartContext } from '../context/CartContext'
 const Cart = () => {
   const { cart, addToCart, subtractFromCart, removeFromCart, subtotal, shippingCost, total } = useContext(CartContext)
 
-  const capitalizeWords = (string) => {
-    return string.split(' ').map(word =>
-      word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ')
-  }
-
   const formatPrice = (amount) => {
     return new Intl.NumberFormat('es-CL', {currency: 'CLP', style: 'currency'}).format(amount)
   }
@@ -34,7 +28,7 @@ const Cart = () => {
                       <img src={pizza.img} alt={pizza.name} className='img-fluid' />
                     </div>
                     <div className='col-md-5'>
-                      <h5 className='card-title mb-0'>Pizza {capitalizeWords(pizza.name)}</h5>
+                      <h5 className='card-title mb-0'>Pizza {pizza.name}</h5>
                       <p><small className='text-muted'>Precio unitario: {formatPrice(pizza.price)}</small></p>
                     </div>
                     <div className='col-md-2'>

@@ -5,10 +5,11 @@ import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 import { CartContext } from '../context/CartContext'
+import { UserContext } from '../context/UserContext'
 
 const Navbar = () => {
   const { total } = useContext(CartContext)
-  const token = false
+  const { token } = useContext(UserContext)
 
   const formatPrice = (amount) => {
     return new Intl.NumberFormat('es-CL', {currency: 'CLP', style: 'currency'}).format(amount)
