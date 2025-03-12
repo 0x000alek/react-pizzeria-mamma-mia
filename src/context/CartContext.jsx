@@ -1,29 +1,55 @@
-import { createContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
+import { AlertContext } from './AlertContext'
 
 export const CartContext = createContext()
 
 const CartProvider = ({ children }) => {
+  const { confirmDialogAlert, toast } = useContext(AlertContext)
+
   const [cartContext, setCartContext] = useState([])
   const cart = cartContext
 
   const addToCart = (cartItem) => {
-    if (cartContext.find((item) => item.id === cartItem.id)) {
-      setCartContext(cartContext.map((item) =>
-        item.id === cartItem.id ? { ...item, count: item.count + 1 } : item
-      ))
-    } else {
-      setCartContext([...cartContext, cartItem])
+    try {
+      if (cartContext.find((item) => item.id === cartItem.id)) {
+        setCartContext(cartContext.map((item) =>
+          item.id === cartItem.id ? { ...item, count: item.count + 1 } : item
+        ))
+      } else {
+        setCartContext([...cartContext, cartItem])
+      }
+
+      toast('success', `1 Pizza ${cartItem.name} añadida al carrito`)
+    } catch (err) {
+      console.error(err)
+      toast('error', `Ha ocurrido un problema tratando de añadir 1 Pizza ${cartItem.name} al carrito`)
     }
   }
 
-  const subtractFromCart = (cartItemId) => {
-    setCartContext(cartContext.map((item) =>
-      item.id === cartItemId ? { ...item, count: item.count - 1 } : item
-    ).filter((item) => item.count > 0))
+  const subtractFromCart = (cartItem) => {
+    try {
+      setCartContext(cartContext.map((item) =>
+        item.id === cartItem.id ? { ...item, count: item.count - 1 } : item
+      ).filter((item) => item.count > 0))
+    } catch (err) {
+      console.error(err)
+      toast('error', `Ha ocurrido un problmea tratando de eliminar 1 Pizza ${cartItem.name} del carrito`)
+    }
   }
 
-  const removeFromCart = (cartItemId) => {
-    setCartContext(cartContext.filter((item) => item.id !== cartItemId))
+  const removeFromCart = (cartItem) => {
+    try {
+      confirmDialogAlert(
+        'warning', 
+        `Se eliminará un total de ${cartItem.count} Pizza ${cartItem.name} de tu carrito`
+      ).then((result) => {
+        if (result.isConfirmed) {
+          setCartContext(cartContext.filter((item) => item.id !== cartItem.id))
+        }
+      })
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const calculateSubtotal = () => {
@@ -39,9 +65,11 @@ const CartProvider = ({ children }) => {
     addToCart,
     subtractFromCart,
     removeFromCart,
-    subtotal,
-    shippingCost,
-    total
+    orderDetails: {
+      subtotal,
+      shippingCost,
+      total
+    }
   }
 
   return (

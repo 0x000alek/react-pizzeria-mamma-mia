@@ -9,9 +9,9 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
+import AlertProvider from './context/AlertContext'
 import CartProvider from './context/CartContext'
 import PizzaProvider from './context/PizzaContext'
-import UserProvider from './context/UserContext'
 
 import { UserContext } from './context/UserContext'
 
@@ -19,28 +19,28 @@ import { useContext } from 'react'
 import { Navigate, BrowserRouter, Route, Routes } from 'react-router-dom'
 
 const App = () => {
-  // const { token } = useContext(UserContext)
+  const { token } = useContext(UserContext)
 
   return (
     <>
       <BrowserRouter>
-        <UserProvider>
+        <AlertProvider>
           <PizzaProvider>
             <CartProvider>
               <Navbar />
               <Routes>
                 <Route path='/' element={<Home />} />
-                <Route path='/register' element={<RegisterPage />} />
-                <Route path='/login' element={<LoginPage />} />
+                <Route path='/register' element={token ? <Navigate to='/' /> : <RegisterPage />} />
+                <Route path='/login' element={token ? <Navigate to='/' /> : <LoginPage />} />
                 <Route path='/cart' element={<Cart />} />
                 <Route path='/pizza/:id' element={<Pizza />} />
-                <Route path='/profile' element={<Profile />} />
+                <Route path='/profile' element={token ? <Profile /> : <Navigate to='/' />} />
                 <Route path='/404' element={<NotFound />} />
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </CartProvider>
           </PizzaProvider>
-        </UserProvider>
+        </AlertProvider>
         <Footer />
       </BrowserRouter>
     </>

@@ -8,8 +8,8 @@ import { CartContext } from '../context/CartContext'
 import { UserContext } from '../context/UserContext'
 
 const Navbar = () => {
-  const { total } = useContext(CartContext)
-  const { token } = useContext(UserContext)
+  const { orderDetails } = useContext(CartContext)
+  const { token, signout } = useContext(UserContext)
 
   const formatPrice = (amount) => {
     return new Intl.NumberFormat('es-CL', {currency: 'CLP', style: 'currency'}).format(amount)
@@ -33,7 +33,7 @@ const Navbar = () => {
           }
           {token &&
           <li className="nav-item px-2 mb-xl-0 mb-2">
-            <a className="btn btn-outline-light" href="#">🔒 Logout</a>
+            <a className="btn btn-outline-light" href="#" onClick={() => signout()}>🔒 Logout</a>
           </li>
           }
           {!token &&
@@ -50,7 +50,7 @@ const Navbar = () => {
         <ul className="navbar-nav">
           <li className="nav-item px-2">
             <Link to="/cart" className="btn btn-outline-info">
-              <FontAwesomeIcon icon={faCartShopping} /> Total: {formatPrice(total)}
+              <FontAwesomeIcon icon={faCartShopping} /> Total: {formatPrice(orderDetails.total)}
             </Link>
           </li>
         </ul>

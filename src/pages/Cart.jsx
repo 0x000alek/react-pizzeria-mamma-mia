@@ -5,9 +5,11 @@ import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 import { CartContext } from '../context/CartContext'
+import { UserContext } from '../context/UserContext'
 
 const Cart = () => {
-  const { cart, addToCart, subtractFromCart, removeFromCart, subtotal, shippingCost, total } = useContext(CartContext)
+  const { cart, addToCart, subtractFromCart, removeFromCart, orderDetails } = useContext(CartContext)
+  const { token } = useContext(UserContext)
 
   const formatPrice = (amount) => {
     return new Intl.NumberFormat('es-CL', {currency: 'CLP', style: 'currency'}).format(amount)
@@ -21,7 +23,7 @@ const Cart = () => {
           <div className='col-lg-8'>
             <div className='card mb-4'>
               <div className='card-body'>
-                {total === 0 && <p className='mb-0 text-center text-body-secondary'><span>Tu carrito está vacío</span></p>}
+                {orderDetails.total === 0 && <p className='mb-0 text-center text-body-secondary'><span>Tu carrito está vacío</span></p>}
                 {cart.map((pizza) => (
                   <div className='row cart-item mb-3' key={pizza.id}>
                     <div className='col-md-3'>
@@ -33,7 +35,7 @@ const Cart = () => {
                     </div>
                     <div className='col-md-2'>
                       <div className="input-group">
-                        <button className="btn btn-outline-secondary btn-sm" type="button" onClick={() => subtractFromCart(pizza.id)}>
+                        <button className="btn btn-outline-secondary btn-sm" type="button" onClick={() => subtractFromCart(pizza)}>
                           <FontAwesomeIcon icon={faMinus} />
                         </button>
                         <input type="text" className="form-control form-control-sm text-center quantity-input" value={pizza.count} readOnly/>
@@ -44,7 +46,7 @@ const Cart = () => {
                     </div>
                     <div className='col-md-2 text-end'>
                       <p className='fw-bold'>{formatPrice(pizza.price * pizza.count)}</p>
-                      <button className='btn btn-sm btn-outline-danger' onClick={() => removeFromCart(pizza.id)}>
+                      <button className='btn btn-sm btn-outline-danger' onClick={() => removeFromCart(pizza)}>
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
                     </div>
@@ -65,18 +67,18 @@ const Cart = () => {
                 <h5 className="card-title mb-4">Resumen del Pedido</h5>
                 <div className="d-flex justify-content-between mb-3">
                   <span>Subtotal</span>
-                  <span>{formatPrice(subtotal)}</span>
+                  <span>{formatPrice(orderDetails.subtotal)}</span>
                 </div>
                 <div className="d-flex justify-content-between mb-3">
                   <span>Costo de Envío</span>
-                  <span>{formatPrice(shippingCost)}</span>
+                  <span>{formatPrice(orderDetails.shippingCost)}</span>
                 </div>
                 <hr/>
                 <div className="d-flex justify-content-between mb-4">
                   <strong>Total</strong>
-                  <strong>{formatPrice(total)}</strong>
+                  <strong>{formatPrice(orderDetails.total)}</strong>
                 </div>
-                <button className="btn btn-primary w-100" disabled={ total === 0}>
+                <button className="btn btn-primary w-100" disabled={ orderDetails.total === 0 || !token}>
                   <FontAwesomeIcon icon={faCartShopping} /> Ir a Pagar
                 </button>
               </div>
