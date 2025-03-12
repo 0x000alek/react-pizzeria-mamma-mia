@@ -1,40 +1,22 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
 
-import { useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+
+import { CartContext } from '../context/CartContext'
+import { PizzaContext } from '../context/PizzaContext'
 
 import Loading from '../components/Loading'
 
 const Pizza = () => {
+  const { addToCart } = useContext(CartContext)
+  const { isLoading, pizza, findPizzaById } = useContext(PizzaContext)
   const { id } = useParams()
 
-  const [pizza, setPizza] = useState({})
-  const [isLoading, setIsLoading] = useState(true)
-
-  const getPizza = async () => {
-    const url = `http://localhost:5000/api/pizzas/${id}`
-    try {
-      const res = await fetch(url)
-      const data = await res.json()
-
-      setPizza({...data, name: capitalizeWords(data.name)})
-      setIsLoading(false)
-    } catch (err) {
-      console.error(err)
-      return
-    }
-  }
-
   useEffect(() => {
-    getPizza()
+    findPizzaById(id)
   }, [])
-
-  const capitalizeWords = (string) => {
-    return string.split(' ').map(word =>
-      word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ')
-  }
 
   const formatPrice = (amount) => {
     return new Intl.NumberFormat('es-CL', {currency: 'CLP', style: 'currency'}).format(amount)
@@ -65,7 +47,7 @@ const Pizza = () => {
           <div className="card-body">
             <p className="fs-3 text fw-bold text-center">Precio: {formatPrice(pizza.price)}</p>
             <div className="card-actions">
-              <button className="btn btn-dark mx-1">
+              <button className="btn btn-dark mx-1" onClick={() => addToCart(pizza)}>
                 Añadir <FontAwesomeIcon icon={faCartShopping} />
               </button>
             </div>

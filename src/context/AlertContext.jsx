@@ -16,7 +16,7 @@ const AlertProvider = ({ children }) => {
 
   const confirmDialogAlert = (type, message) => {
     return withReactContent(Swal).fire({
-      title: 'Estás seguro?',
+      title: '¿Estás seguro?',
       text: message,
       icon: type,
       showCancelButton: true,

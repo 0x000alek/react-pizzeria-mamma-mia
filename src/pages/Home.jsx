@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 
 import Header from '../components/Header'
 import CardPizza from '../components/CardPizza'
@@ -6,7 +6,11 @@ import CardPizza from '../components/CardPizza'
 import { PizzaContext } from '../context/PizzaContext'
 
 const Home = () => {
-  const { pizzas } = useContext(PizzaContext)
+  const { pizzas, findAllPizzas } = useContext(PizzaContext)
+
+  useEffect(() => {
+    findAllPizzas()
+  }, [])
 
   return (
     <>

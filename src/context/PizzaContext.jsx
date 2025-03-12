@@ -3,12 +3,15 @@ import { createContext, useEffect, useState } from 'react'
 export const PizzaContext = createContext()
 
 const PizzaProvider = ({ children }) => {
+  const baseUrl = 'http://localhost:5000/api/pizzas'
+
   const [pizzas, setPizzas] = useState([])
+  const [pizza, setPizza] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
     
-  const getPizzas = async () => {
-    const url = 'http://localhost:5000/api/pizzas'
+  const findAllPizzas = async () => {
     try {
-      const res = await fetch(url)
+      const res = await fetch(baseUrl)
       const data = await res.json()
       
       setPizzas(data.map(item => ({...item, name: capitalizeWords(item.name)})))
@@ -18,9 +21,19 @@ const PizzaProvider = ({ children }) => {
     }
   }
 
-  useEffect(() => {
-    getPizzas()
-  }, [])
+  const findPizzaById = async (pizzaId) => {
+    const url = `${baseUrl}/${pizzaId}`
+    try {
+      const res = await fetch(url)
+      const data = await res.json()
+
+      setPizza({...data, name: capitalizeWords(data.name)})
+      setIsLoading(false)
+    } catch (err) {
+      console.error(err)
+      return
+    }
+  }
 
   const capitalizeWords = (string) => {
     return string.split(' ').map(word =>
@@ -28,8 +41,16 @@ const PizzaProvider = ({ children }) => {
     ).join(' ')
   }
 
+  const stateglobal = {
+    pizzas, 
+    pizza, 
+    isLoading, 
+    findAllPizzas, 
+    findPizzaById
+  }
+
   return (
-    <PizzaContext.Provider value={{ pizzas }}>
+    <PizzaContext.Provider value={stateglobal}>
       {children}
     </PizzaContext.Provider>
   )

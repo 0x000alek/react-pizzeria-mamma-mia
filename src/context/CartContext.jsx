@@ -16,7 +16,7 @@ const CartProvider = ({ children }) => {
           item.id === cartItem.id ? { ...item, count: item.count + 1 } : item
         ))
       } else {
-        setCartContext([...cartContext, cartItem])
+        setCartContext([...cartContext, {...cartItem, count: 1}])
       }
 
       toast('success', `1 Pizza ${cartItem.name} añadida al carrito`)

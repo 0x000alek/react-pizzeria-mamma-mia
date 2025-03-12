@@ -12,7 +12,6 @@ const CardPizza = ({ id, name, price, ingredients, img }) => {
     id, 
     name, 
     price, 
-    count: 1, 
     img
   }
 
@@ -32,7 +31,7 @@ const CardPizza = ({ id, name, price, ingredients, img }) => {
           <p className="fs-4 text mb-0">Ingredientes:</p>
           <ul className='list-unstyled'>
             { ingredients.map((ingredient) => (
-              <li key={ingredient}>{ingredient}</li>
+              <li key={ingredient}>🍕 {ingredient}</li>
             ))}
           </ul>
         </div>

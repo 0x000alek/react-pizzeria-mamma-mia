@@ -1,8 +1,8 @@
+import Spinner from 'react-bootstrap/Spinner';
+
 const Loading = () => {
   return (
-    <>
-    <p><i>Loading...</i></p>
-    </>
+    <Spinner animation="border" />
   )
 }
 
