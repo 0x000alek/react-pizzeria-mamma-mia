@@ -4,7 +4,7 @@ export const UserContext = createContext()
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
-  const [token, setToken] = useState(false)
+  const [token, setToken] = useState(true)
 
   const signout = () => {
     setToken(false)
