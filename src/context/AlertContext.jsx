@@ -10,7 +10,8 @@ const AlertProvider = ({ children }) => {
     return withReactContent(Swal).fire({
       title: title,
       text: message,
-      icon: type
+      icon: type,
+      timer: 2000
     })
   }
 

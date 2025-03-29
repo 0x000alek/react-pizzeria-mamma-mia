@@ -8,7 +8,7 @@ import { CartContext } from '../context/CartContext'
 import { UserContext } from '../context/UserContext'
 
 const Cart = () => {
-  const { cart, addToCart, subtractFromCart, removeFromCart, orderDetails } = useContext(CartContext)
+  const { cart, addToCart, subtractFromCart, removeFromCart, orderDetails, checkout } = useContext(CartContext)
   const { token } = useContext(UserContext)
 
   const formatPrice = (amount) => {
@@ -78,7 +78,7 @@ const Cart = () => {
                   <strong>Total</strong>
                   <strong>{formatPrice(orderDetails.total)}</strong>
                 </div>
-                <button className="btn btn-primary w-100" disabled={ orderDetails.total === 0 || !token}>
+                <button className="btn btn-primary w-100" onClick={() => checkout()} disabled={ orderDetails.total === 0 || !token}>
                   <FontAwesomeIcon icon={faCartShopping} /> Ir a Pagar
                 </button>
               </div>

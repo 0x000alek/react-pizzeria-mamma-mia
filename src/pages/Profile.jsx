@@ -1,8 +1,8 @@
+import { useContext } from 'react'
+import { UserContext } from '../context/UserContext'
+
 const Profile = () => {
-  const testUser = {
-    name: 'Mamma Mia',
-    email: 'user@mammamia.cl'
-  }
+  const { user, signout } = useContext(UserContext)
 
   return (
     <>
@@ -12,8 +12,8 @@ const Profile = () => {
           <div className="col-xl-8 col-md-10 col-sm-10">
             <h1 className="mb-4">Perfil de Usuario</h1>
             <div className="d-flex justify-content-between align-items-center">
-              <p>Usuario: {testUser.email}</p>
-              <button className="btn btn-danger">Cerrar Sesión</button>
+              <p>Usuario: { user.email }</p>
+              <button className="btn btn-danger" onClick={() => signout()}>Cerrar Sesión</button>
             </div>
           </div>
         </div>

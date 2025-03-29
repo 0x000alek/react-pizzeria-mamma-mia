@@ -5,9 +5,12 @@ import { UserContext } from '../context/UserContext'
 
 const ProtectedRoute = ({ children, navigateTo, requireAuth = true }) => {
     const { token } = useContext(UserContext)
+    const istokenExists = () => {
+        return token ? true : false
+    }
 
     return (
-        token === requireAuth ? children : <Navigate to={navigateTo} />
+        istokenExists() === requireAuth ? children : <Navigate to={navigateTo} />
     )
 }
 

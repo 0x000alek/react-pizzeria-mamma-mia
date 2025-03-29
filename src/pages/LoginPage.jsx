@@ -1,43 +1,38 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { UserContext } from '../context/UserContext'
 
 const LoginPage = () => {
-  const emptyyUser = {
+  const { signin } = useContext(UserContext)
+
+  const [formData, setFormData] = useState({
     email: '',
     password: ''
-  }
-
-  const testUser = {
-    email: 'user@mammamia.cl',
-    password: 'mammamia'
-  }
-
-  const [user, setUser] = useState(emptyyUser)
+  })
 
   const handleInputOnChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value })
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleLoginFormOnSubmit = (e) => {
+  const handleLoginFormOnSubmit = async (e) => {
     e.preventDefault()
 
-    const {email, password} = user
-    if (!email.trim() || !password.trim()) {
-      alert('No pueden haber campos vacíos')
-      return
-    }
+    const {email, password} = formData
+    try {
+      if (!email.trim() || !password.trim()) {
+        alert('No pueden haber campos vacíos')
+        return
+      }
 
-    if (password.trim().length < 6) {
-      alert('La contraseña debe tener al menos 6 caracteres')
-      return
-    }
+      if (password.trim().length < 6) {
+        alert('La contraseña debe tener al menos 6 caracteres')
+        return
+      }
 
-    if (email != testUser.email || password != testUser.password) {
-      alert('Email y/o contraseña incorrectos')
-      return
+      await signin(email, password)
+      alert('Ingreso existoso!')
+    } catch (err) {
+      console.error(err)
     }
-
-    alert('Ingreso existoso!')
-    setUser({ email: '', password: '' })
   }
 
   return (
@@ -51,16 +46,16 @@ const LoginPage = () => {
                 <h1 className="mb-4 pt-2 pb-2">Login</h1>
                 <div className="mb-3">
                   <label htmlFor="inputEmail" className="form-label">Email</label>
-                  <input type="email" name="email" value={user.email} onChange={handleInputOnChange} className="form-control" id="inputEmail" placeholder="Ingresa tu email" />
+                  <input type="email" name="email" value={formData.email} onChange={handleInputOnChange} className="form-control" id="inputEmail" placeholder="Ingresa tu email" />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="inputPassword" className="form-label">Password</label>
-                  <input type="password" name='password' value={user.password} onChange={handleInputOnChange} className="form-control" id="inputPassword" placeholder="Ingresa tu contraseña" />
+                  <input type="password" name='password' value={formData.password} onChange={handleInputOnChange} className="form-control" id="inputPassword" placeholder="Ingresa tu contraseña" />
                 </div>
                 <button 
                   type="submit" 
                   className="btn btn-primary w-100"
-                  disabled={!user.email || !user.password}>Submit</button>
+                  disabled={!formData.email || !formData.password}>Submit</button>
               </form>
             </div>
           </div>

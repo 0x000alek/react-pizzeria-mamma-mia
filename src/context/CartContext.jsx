@@ -1,22 +1,25 @@
+import axios from 'axios'
 import { createContext, useContext, useState } from 'react'
+
 import { AlertContext } from './AlertContext'
+import { UserContext } from './UserContext'
 
 export const CartContext = createContext()
 
 const CartProvider = ({ children }) => {
-  const { confirmDialogAlert, toast } = useContext(AlertContext)
+  const { simpleAlert, confirmDialogAlert, toast } = useContext(AlertContext)
+  const { user, token } = useContext(UserContext)
 
-  const [cartContext, setCartContext] = useState([])
-  const cart = cartContext
+  const [cart, setCart] = useState([])
 
   const addToCart = (cartItem) => {
     try {
-      if (cartContext.find((item) => item.id === cartItem.id)) {
-        setCartContext(cartContext.map((item) =>
+      if (cart.find((item) => item.id === cartItem.id)) {
+        setCart(cart.map((item) =>
           item.id === cartItem.id ? { ...item, count: item.count + 1 } : item
         ))
       } else {
-        setCartContext([...cartContext, {...cartItem, count: 1}])
+        setCart([...cart, {...cartItem, count: 1}])
       }
 
       toast('success', `1 Pizza ${cartItem.name} añadida al carrito`)
@@ -28,7 +31,7 @@ const CartProvider = ({ children }) => {
 
   const subtractFromCart = (cartItem) => {
     try {
-      setCartContext(cartContext.map((item) =>
+      setCart(cart.map((item) =>
         item.id === cartItem.id ? { ...item, count: item.count - 1 } : item
       ).filter((item) => item.count > 0))
     } catch (err) {
@@ -44,9 +47,22 @@ const CartProvider = ({ children }) => {
         `Se eliminará un total de ${cartItem.count} Pizza ${cartItem.name} de tu carrito`
       ).then((result) => {
         if (result.isConfirmed) {
-          setCartContext(cartContext.filter((item) => item.id !== cartItem.id))
+          setCart(cart.filter((item) => item.id !== cartItem.id))
         }
       })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const checkout = async () => {
+    try {
+      await axios.post('http://localhost:5000/api/checkouts', {cart, user}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      simpleAlert('success', 'Compra exitosa', 'Tu compra ha finalizado exitosamente')
     } catch (err) {
       console.error(err)
     }
@@ -69,7 +85,8 @@ const CartProvider = ({ children }) => {
       subtotal,
       shippingCost,
       total
-    }
+    }, 
+    checkout
   }
 
   return (
